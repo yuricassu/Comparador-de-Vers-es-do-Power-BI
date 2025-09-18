@@ -1,0 +1,273 @@
+/* Fonte moderna */
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #6A72D9;
+    color: #fff;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.upload-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.file-upload-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.custom-file-upload {
+    background: linear-gradient(145deg, #ffffff, #e0e0e0);
+    color: #6A72D9;
+    padding: 2rem;
+    border-radius: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+.custom-file-upload:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+}
+.custom-file-upload input {
+    display: none;
+}
+
+.file-name {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: #fff;
+    word-break: break-all;
+}
+
+.upload-feedback {
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+    color: #00ff00;
+}
+
+/* Botão analisar */
+.analyze-btn {
+    margin-top: 1rem;
+    padding: 1.8rem;
+    width: 100%;
+    background: linear-gradient(145deg, #ffffff, #e0e0e0);
+    color: #6A72D9;
+    border-radius: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    transition: all 0.3s ease;
+}
+.analyze-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+}
+
+/* Progress bar */
+.progress-bar {
+    width: 100%;
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+.progress {
+    width: 0%;
+    height: 12px;
+    background-color: #fff;
+    transition: width 0.4s ease;
+    border-radius: 12px;
+}
+
+/* Checkmark */
+.checkmark {
+    font-size: 1.5rem;
+    color: #00ff00;
+    margin-top: 1rem;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Cards */
+.cards {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+.card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    padding: 1.5rem;
+    border-radius: 16px;
+    flex: 1 1 30%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeIn 0.8s forwards;
+}
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+}
+.card h3 { margin-bottom: 0.5rem; }
+.added { border-top: 4px solid #4caf50; }
+.removed { border-top: 4px solid #f44336; }
+.modified { border-top: 4px solid #ff9800; }
+
+/* Report section */
+.report-section {
+    text-align: left;
+    margin: 2rem 0;
+    background-color: rgba(255,255,255,0.1);
+    padding: 1rem 2rem;
+    border-radius: 16px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Comparação visual com tooltip */
+.comparison-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+.table-header {
+    font-weight: 700;
+    display: contents;
+}
+.table-row {
+    display: contents;
+}
+.table-header div, .table-row div {
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+.old-value {
+    background-color: #f44336;
+    color: #fff;
+    cursor: help;
+}
+.new-value {
+    background-color: #4caf50;
+    color: #fff;
+    cursor: help;
+}
+
+/* PDF Download */
+.download {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    background: #fff;
+    color: #6A72D9;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+.download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+/* Animations */
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+    .custom-file-upload {
+        padding: 1.5rem;
+        font-size: 0.95rem;
+    }
+    .analyze-btn {
+        padding: 1.5rem;
+        font-size: 0.95rem;
+    }
+    .cards {
+        flex-direction: column;
+    }
+    .card {
+        flex: 1 1 100%;
+    }
+    .comparison-table {
+        grid-template-columns: 1fr 1fr;
+    }
+    .table-header div, .table-row div {
+        font-size: 0.85rem;
+        padding: 0.3rem;
+    }
+    .progress {
+        height: 10px;
+    }
+    .checkmark {
+        font-size: 1.3rem;
+    }
+    .download {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+    .custom-file-upload {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+    .analyze-btn {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+    .comparison-table {
+        grid-template-columns: 1fr;
+    }
+    .table-header div, .table-row div {
+        font-size: 0.8rem;
+        padding: 0.25rem;
+    }
+    .progress {
+        height: 8px;
+    }
+    .checkmark {
+        font-size: 1.2rem;
+    }
+    .download {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.85rem;
+    }
+}

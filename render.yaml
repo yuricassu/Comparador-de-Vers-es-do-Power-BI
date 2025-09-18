@@ -1,0 +1,16 @@
+# Configuração para Deploy no Render.com
+
+services:
+  - type: web
+    name: comparador-pbi
+    env: python
+    plan: free
+    region: oregon  # ou outro disponível
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    autoDeploy: true
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PORT
+        value: 10000  # Render vai substituir pelo correto
