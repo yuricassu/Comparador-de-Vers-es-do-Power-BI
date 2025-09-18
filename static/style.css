@@ -1,232 +1,254 @@
-/* Fonte global */
+/* Fonte moderna */
 body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Fundo atualizado */
     margin: 0;
-    padding: 0;
-    color: #333;
-    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
 }
 
-/* Container principal */
 .container {
-    max-width: 1200px;
-    margin: 40px auto; /* Espaçamento do topo */
-    padding: 20px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-}
-
-/* Título */
-h1 {
+    max-width: 800px;
+    margin: 3rem auto 2rem; /* espaçamento do topo aumentado */
+    padding: 2rem;
     text-align: center;
-    margin-bottom: 30px;
-    color: #4b0082;
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
 }
 
-/* Upload */
+h1 {
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
 .upload-section {
     display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
+    flex-direction: column;
+    gap: 1.8rem;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
 .file-upload-container {
-    border: 2px dashed #bbb;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    background: #fafafa;
-    flex: 1;
-    min-width: 280px;
-    max-width: 400px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-}
-
-.file-upload-container.dragover {
-    border-color: #764ba2;
-    background: #f3e8ff;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
 }
 
 .custom-file-upload {
-    display: inline-block;
-    padding: 10px 20px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #fff;
-    border-radius: 8px;
-    cursor: pointer;
+    padding: 2rem;
+    border-radius: 16px;
     font-weight: 600;
-    transition: transform 0.2s ease;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
 }
-
 .custom-file-upload:hover {
-    transform: scale(1.05);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
 }
-
-input[type="file"] {
+.custom-file-upload input {
     display: none;
 }
 
 .file-name {
-    display: block;
-    margin-top: 10px;
-    font-size: 14px;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: #fff;
+    word-break: break-all;
 }
 
 .upload-feedback {
-    display: block;
-    margin-top: 5px;
-    font-size: 13px;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+    color: #00ff00;
 }
 
 /* Botão analisar */
 .analyze-btn {
+    margin-top: 1rem;
+    padding: 1.8rem;
+    width: 100%;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
+    color: #fff;
+    border-radius: 16px;
+    font-weight: 700;
     cursor: pointer;
-    margin-top: 15px;
-    font-weight: 600;
-    transition: transform 0.2s ease;
+    font-size: 1rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    transition: all 0.3s ease;
 }
-
 .analyze-btn:hover {
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
 }
 
-/* Barra de progresso */
+/* Progress bar */
 .progress-bar {
     width: 100%;
-    background: #ddd;
-    border-radius: 10px;
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 12px;
     overflow: hidden;
-    margin-top: 20px;
-    height: 20px;
+    margin-top: 1rem;
 }
-
 .progress {
-    height: 100%;
-    width: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    width: 0%;
+    height: 12px;
+    background-color: #fff;
     transition: width 0.4s ease;
+    border-radius: 12px;
 }
 
 /* Checkmark */
 .checkmark {
-    margin-top: 15px;
-    font-size: 18px;
-    color: #764ba2;
-    text-align: center;
+    font-size: 1.5rem;
+    color: #00ff00;
+    margin-top: 1rem;
+    animation: fadeIn 0.8s ease-in-out;
 }
 
-/* Cards resumo */
+/* Cards */
 .cards {
     display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin: 30px 0;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
     flex-wrap: wrap;
 }
-
 .card {
-    flex: 1;
-    min-width: 250px;
-    padding: 20px;
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    text-align: center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    padding: 1.5rem;
+    border-radius: 16px;
+    flex: 1 1 30%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeIn 0.8s forwards;
 }
-
-.card.added {
-    border-left: 6px solid #4CAF50;
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
 }
+.card h3 { margin-bottom: 0.5rem; }
+.added { border-top: 4px solid #4caf50; }
+.removed { border-top: 4px solid #f44336; }
+.modified { border-top: 4px solid #ff9800; }
 
-.card.removed {
-    border-left: 6px solid #e74c3c;
-}
-
-.card.modified {
-    border-left: 6px solid #f39c12;
-}
-
-/* Relatório detalhado */
+/* Report section */
 .report-section {
-    margin-top: 40px;
+    text-align: left;
+    margin: 2rem 0;
+    background-color: rgba(255,255,255,0.1);
+    padding: 1rem 2rem;
+    border-radius: 16px;
+    max-height: 800px;
+    overflow-y: auto;
 }
 
-.report-section h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #4b0082;
-}
-
-/* Tabela de modificados */
+/* Comparação visual com tooltip */
 .comparison-table {
     display: grid;
-    grid-template-columns: 120px 150px 200px 150px 1fr 1fr;
-    gap: 10px;
-    padding: 10px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-
-    overflow-x: auto;
-    max-width: 100%;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
-
 .table-header {
-    font-weight: bold;
-    background: #f0f0f0;
-    padding: 10px;
+    font-weight: 700;
     display: contents;
 }
-
 .table-row {
     display: contents;
 }
-
-.table-row > div,
-.table-header > div {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-    word-wrap: break-word;
-}
-
-/* Valores antigos e novos */
-.old-value {
-    color: #e74c3c;
-    font-weight: bold;
-    cursor: help;
-}
-
-.new-value {
-    color: #2ecc71;
-    font-weight: bold;
-    cursor: help;
-}
-
-/* Download PDF */
-.download {
-    display: block;
-    text-align: center;
-    margin: 30px auto;
-    padding: 12px 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    text-decoration: none;
+.table-header div, .table-row div {
+    padding: 0.5rem;
     border-radius: 8px;
-    width: fit-content;
-    font-weight: 600;
-    transition: transform 0.2s ease;
+}
+.old-value {
+    background-color: #f44336;
+    color: #fff;
+    cursor: help;
+}
+.new-value {
+    background-color: #4caf50;
+    color: #fff;
+    cursor: help;
 }
 
+/* PDF Download */
+.download {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    background: #fff;
+    color: #6A72D9;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
 .download:hover {
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+/* Animations */
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+        margin: 2rem 1rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .file-upload-container .custom-file-upload {
+        padding: 1.5rem;
+        font-size: 1rem;
+    }
+
+    .analyze-btn {
+        padding: 1.5rem;
+        font-size: 1rem;
+    }
+
+    .cards {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .card {
+        flex: 1 1 100%;
+        padding: 1.2rem;
+        font-size: 0.95rem;
+    }
+
+    .report-section {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .comparison-table {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        gap: 0.3rem;
+        font-size: 0.85rem;
+    }
+
+    .download {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.95rem;
+    }
 }
