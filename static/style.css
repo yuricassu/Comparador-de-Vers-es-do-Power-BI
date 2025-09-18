@@ -1,7 +1,7 @@
 /* Fonte global */
 body {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* Roxo + Azul */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Fundo atualizado */
     margin: 0;
     padding: 0;
     color: #333;
@@ -10,10 +10,10 @@ body {
 
 /* Container principal */
 .container {
-    max-width: 1200px; /* Aumentado para evitar barra lateral */
-    margin: 0 auto;
+    max-width: 1200px;
+    margin: 40px auto; /* Espaçamento do topo */
     padding: 20px;
-    background: #fff; /* Fundo branco só no container */
+    background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
@@ -22,7 +22,7 @@ body {
 h1 {
     text-align: center;
     margin-bottom: 30px;
-    color: #4b0082; /* Roxo escuro */
+    color: #4b0082;
 }
 
 /* Upload */
@@ -48,17 +48,23 @@ h1 {
 }
 
 .file-upload-container.dragover {
-    border-color: #6a11cb;
+    border-color: #764ba2;
     background: #f3e8ff;
 }
 
 .custom-file-upload {
     display: inline-block;
     padding: 10px 20px;
-    background: #6a11cb;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #fff;
     border-radius: 8px;
     cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s ease;
+}
+
+.custom-file-upload:hover {
+    transform: scale(1.05);
 }
 
 input[type="file"] {
@@ -79,18 +85,19 @@ input[type="file"] {
 
 /* Botão analisar */
 .analyze-btn {
-    background: #2575fc;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     padding: 12px 25px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     margin-top: 15px;
-    transition: background 0.3s;
+    font-weight: 600;
+    transition: transform 0.2s ease;
 }
 
 .analyze-btn:hover {
-    background: #1258c9;
+    transform: scale(1.05);
 }
 
 /* Barra de progresso */
@@ -106,7 +113,7 @@ input[type="file"] {
 .progress {
     height: 100%;
     width: 0;
-    background: #6a11cb;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     transition: width 0.4s ease;
 }
 
@@ -114,7 +121,7 @@ input[type="file"] {
 .checkmark {
     margin-top: 15px;
     font-size: 18px;
-    color: #6a11cb;
+    color: #764ba2;
     text-align: center;
 }
 
@@ -170,7 +177,6 @@ input[type="file"] {
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 
-    /* Corrigido: nunca estoura o container */
     overflow-x: auto;
     max-width: 100%;
 }
@@ -212,14 +218,15 @@ input[type="file"] {
     text-align: center;
     margin: 30px auto;
     padding: 12px 20px;
-    background: #6a11cb;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     text-decoration: none;
     border-radius: 8px;
     width: fit-content;
-    transition: background 0.3s;
+    font-weight: 600;
+    transition: transform 0.2s ease;
 }
 
 .download:hover {
-    background: #4b0082;
+    transform: scale(1.05);
 }
