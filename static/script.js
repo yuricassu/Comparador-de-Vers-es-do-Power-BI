@@ -1,71 +1,59 @@
-// Seleciona elementos
-const analyzeBtn = document.getElementById("analyze-btn");
-const pbitInput = document.getElementById("pbit-file");
-const prevPbitInput = document.getElementById("previous-pbit-file");
-const progressBar = document.querySelector(".progress");
-const uploadFeedback = document.querySelectorAll(".upload-feedback");
-const checkmark = document.querySelector(".checkmark");
+// Atualiza nomes de arquivos quando selecionados
+const pbitInput = document.getElementById("pbit_file");
+const previousInput = document.getElementById("previous_pbit_file");
+const currentFileName = document.getElementById("currentFileName");
+const previousFileName = document.getElementById("previousFileName");
 
-// Função para mostrar feedback instantâneo
-[pbitInput, prevPbitInput].forEach((input, idx) => {
-    input.addEventListener("change", () => {
-        const file = input.files[0];
-        if (file) {
-            uploadFeedback[idx].textContent = `✅ Arquivo carregado: ${file.name}`;
-        } else {
-            uploadFeedback[idx].textContent = `❌ Nenhum arquivo selecionado`;
-        }
-    });
+pbitInput.addEventListener("change", () => {
+    currentFileName.textContent = pbitInput.files[0]?.name || "";
 });
 
-analyzeBtn.addEventListener("click", () => {
+previousInput.addEventListener("change", () => {
+    previousFileName.textContent = previousInput.files[0]?.name || "";
+});
+
+// Botão Analisar
+document.getElementById("analyzeBtn").addEventListener("click", async () => {
     const pbitFile = pbitInput.files[0];
+    const previousFile = previousInput.files[0];
+
     if (!pbitFile) {
-        alert("Por favor, carregue o PBIT atual.");
+        alert("Envie o arquivo atual!");
         return;
     }
 
     const formData = new FormData();
     formData.append("pbit_file", pbitFile);
-    const prevFile = prevPbitInput.files[0];
-    if (prevFile) formData.append("previous_pbit_file", prevFile);
+    if (previousFile) formData.append("previous_pbit_file", previousFile);
 
-    // Reset progress e checkmark
-    progressBar.style.width = "0%";
-    checkmark.style.opacity = 0;
+    // Mostrar barra de progresso
+    const progressBar = document.getElementById("progressBar");
+    const progress = progressBar.querySelector(".progress");
+    progressBar.style.display = "block";
+    progress.style.width = "0%";
 
-    // Envia requisição POST para /analisar
-    fetch("/analisar", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) throw new Error("Erro na análise");
-        return response.blob(); // PDF
-    })
-    .then(blob => {
-        // Atualiza barra de progresso (simulação)
-        let width = 0;
-        const interval = setInterval(() => {
-            if (width >= 100) {
-                clearInterval(interval);
-                checkmark.style.opacity = 1; // Mostra checkmark
-            } else {
-                width += 5;
-                progressBar.style.width = width + "%";
-            }
-        }, 50);
+    try {
+        const response = await fetch("/analisar", {
+            method: "POST",
+            body: formData
+        });
 
-        // Cria link para download do PDF
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "comparador_de_versoes.pdf";
-        a.click();
-        window.URL.revokeObjectURL(url);
-    })
-    .catch(err => {
+        const data = await response.json();
+
+        // Ocultar barra e mostrar checkmark
+        progress.style.width = "100%";
+        const checkmark = document.getElementById("checkmark");
+        checkmark.style.display = "block";
+
+        // Aqui você pode atualizar cards, report, PDF link
+        console.log(data);
+
+    } catch (err) {
         console.error(err);
-        alert("Ocorreu um erro ao analisar os arquivos.");
-    });
+        alert("Erro na análise.");
+    } finally {
+        setTimeout(() => {
+            document.getElementById("progressBar").style.display = "none";
+        }, 800);
+    }
 });
