@@ -1,10 +1,9 @@
-/* Fonte moderna e background */
+/* Fonte moderna */
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
     background-color: #6A72D9;
     color: #fff;
-    overflow-x: hidden; /* evita barra de rolagem horizontal */
 }
 
 .container {
@@ -20,7 +19,6 @@ h1 {
     font-weight: 700;
 }
 
-/* Upload Section */
 .upload-section {
     display: flex;
     flex-direction: column;
@@ -199,3 +197,77 @@ h1 {
 
 /* Animations */
 @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+    .custom-file-upload {
+        padding: 1.5rem;
+        font-size: 0.95rem;
+    }
+    .analyze-btn {
+        padding: 1.5rem;
+        font-size: 0.95rem;
+    }
+    .cards {
+        flex-direction: column;
+    }
+    .card {
+        flex: 1 1 100%;
+    }
+    .comparison-table {
+        grid-template-columns: 1fr 1fr;
+    }
+    .table-header div, .table-row div {
+        font-size: 0.85rem;
+        padding: 0.3rem;
+    }
+    .progress {
+        height: 10px;
+    }
+    .checkmark {
+        font-size: 1.3rem;
+    }
+    .download {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+    .custom-file-upload {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+    .analyze-btn {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+    .comparison-table {
+        grid-template-columns: 1fr;
+    }
+    .table-header div, .table-row div {
+        font-size: 0.8rem;
+        padding: 0.25rem;
+    }
+    .progress {
+        height: 8px;
+    }
+    .checkmark {
+        font-size: 1.2rem;
+    }
+    .download {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.85rem;
+    }
+}

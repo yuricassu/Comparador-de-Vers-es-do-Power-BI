@@ -62,13 +62,17 @@ enableDragDrop(
 // Barra de progresso, checkmark e envio AJAX
 const form = document.getElementById("uploadForm");
 form.addEventListener("submit", function(e) {
-    e.preventDefault(); // evita reload
+    e.preventDefault(); // previne recarregamento da página
+
     const progressBar = document.getElementById("progressBar");
     const progress = document.getElementById("progress");
     const checkmark = document.getElementById("analysisComplete");
+
     progressBar.style.display = "block";
     checkmark.style.display = "none";
+    progress.style.width = "0%";
 
+    // Inicia a animação da barra de progresso
     let width = 0;
     const interval = setInterval(() => {
         if (width >= 95) clearInterval(interval);
@@ -76,94 +80,150 @@ form.addEventListener("submit", function(e) {
         progress.style.width = width + "%";
     }, 50);
 
+    // Prepara os arquivos para envio
     const formData = new FormData(form);
+
     fetch("/analisar", {
         method: "POST",
         body: formData
     })
     .then(response => response.json())
     .then(data => {
+        clearInterval(interval);
         progress.style.width = "100%";
+
+        // Exibe o checkmark
         checkmark.style.display = "block";
 
+        // Remove checkmark e barra após 2s
         setTimeout(() => {
             checkmark.style.display = "none";
+            progressBar.style.display = "none";
         }, 2000);
 
-        // Remove análises anteriores
-        document.querySelectorAll(".cards, .report-section, .download").forEach(el => el.remove());
-
-        // Renderiza cards
-        if (data.report) {
-            const summary = {
-                Adicionados: data.report.added.length,
-                Removidos: data.report.removed.length,
-                Modificados: data.report.modified.length
-            };
-
-            const cardsContainer = document.createElement("div");
-            cardsContainer.className = "cards";
-
-            for (const key in summary) {
-                const card = document.createElement("div");
-                card.className = "card " + (key === "Adicionados" ? "added" : key === "Removidos" ? "removed" : "modified");
-                card.innerHTML = `<h3>${key === "Adicionados" ? "✔ Adicionados" : key === "Removidos" ? "✖ Removidos" : "⚠ Modificados"}</h3>
-                                  <p>${summary[key]}</p>`;
-                cardsContainer.appendChild(card);
-            }
-            form.parentNode.insertBefore(cardsContainer, form.nextSibling);
-
-            // Renderiza relatório
-            const reportSection = document.createElement("div");
-            reportSection.className = "report-section";
-
-            reportSection.innerHTML = `<h2>🔍 Relatório Detalhado</h2>
-            <h3>Adicionados</h3>
-            <ul>${data.report.added.map(item => `<li>${item}</li>`).join("") || "<li>Nenhum</li>"}</ul>
-            <h3>Removidos</h3>
-            <ul>${data.report.removed.map(item => `<li>${item}</li>`).join("") || "<li>Nenhum</li>"}</ul>
-            <h3>Modificados (Comparação Visual)</h3>
-            ${data.report.modified.length ? `<div class="comparison-table">
-                <div class="table-header">
-                    <div>Tipo</div><div>Tabela</div><div>Nome</div><div>Alteração</div><div>Antes</div><div>Depois</div>
-                </div>
-                ${data.report.modified.map(m => `<div class="table-row">
-                    <div>${m.tipo}</div><div>${m.tabela}</div><div>${m.nome}</div><div>${m.alteracao_tipo}</div>
-                    <div class="old-value" title="${m.valor_antigo}">${m.valor_antigo}</div>
-                    <div class="new-value" title="${m.valor_novo}">${m.valor_novo}</div>
-                </div>`).join("")}
-            </div>` : "<p>Nenhum</p>"}`;
-
-            form.parentNode.insertBefore(reportSection, form.nextSibling);
-
-            // Botão PDF
-            const downloadBtn = document.createElement("a");
-            downloadBtn.className = "download";
-            downloadBtn.href = "#";
-            downloadBtn.textContent = "📥 Baixar PDF";
-            downloadBtn.addEventListener("click", function(ev) {
-                ev.preventDefault();
-                fetch("/baixar_pdf", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ report: data.report })
-                })
-                .then(resp => resp.blob())
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement("a");
-                    a.href = url;
-                    a.download = "comparador.pdf";
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                });
-            });
-            form.parentNode.insertBefore(downloadBtn, reportSection.nextSibling);
-        }
+        // Renderiza os cards e relatório dinamicamente
+        renderReport(data.report);
     })
     .catch(err => {
         console.error(err);
+        checkmark.style.display = "none";
         progressBar.style.display = "none";
+        alert("Ocorreu um erro ao analisar os arquivos.");
     });
 });
+
+// Função para criar cards e relatório
+function renderReport(report) {
+    // Remove conteúdo anterior se existir
+    const oldCards = document.querySelector(".cards");
+    if (oldCards) oldCards.remove();
+    const oldReport = document.querySelector(".report-section");
+    if (oldReport) oldReport.remove();
+    const oldDownload = document.querySelector(".download");
+    if (oldDownload) oldDownload.remove();
+
+    if (!report) return;
+
+    const container = document.querySelector(".container");
+
+    // Cards
+    const cardsDiv = document.createElement("div");
+    cardsDiv.className = "cards";
+
+    const addedCard = document.createElement("div");
+    addedCard.className = "card added";
+    addedCard.innerHTML = `<h3>✔ Adicionados</h3><p>${report.added.length}</p>`;
+    cardsDiv.appendChild(addedCard);
+
+    const removedCard = document.createElement("div");
+    removedCard.className = "card removed";
+    removedCard.innerHTML = `<h3>✖ Removidos</h3><p>${report.removed.length}</p>`;
+    cardsDiv.appendChild(removedCard);
+
+    const modifiedCard = document.createElement("div");
+    modifiedCard.className = "card modified";
+    modifiedCard.innerHTML = `<h3>⚠ Modificados</h3><p>${report.modified.length}</p>`;
+    cardsDiv.appendChild(modifiedCard);
+
+    container.appendChild(cardsDiv);
+
+    // Relatório detalhado
+    const reportDiv = document.createElement("div");
+    reportDiv.className = "report-section";
+    reportDiv.innerHTML = `<h2>🔍 Relatório Detalhado</h2>`;
+
+    // Adicionados
+    const addedList = document.createElement("ul");
+    report.added.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        addedList.appendChild(li);
+    });
+    if(report.added.length === 0) addedList.innerHTML = "<li>Nenhum</li>";
+    reportDiv.innerHTML += "<h3>Adicionados</h3>";
+    reportDiv.appendChild(addedList);
+
+    // Removidos
+    const removedList = document.createElement("ul");
+    report.removed.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        removedList.appendChild(li);
+    });
+    if(report.removed.length === 0) removedList.innerHTML = "<li>Nenhum</li>";
+    reportDiv.innerHTML += "<h3>Removidos</h3>";
+    reportDiv.appendChild(removedList);
+
+    // Modificados
+    reportDiv.innerHTML += "<h3>Modificados (Comparação Visual)</h3>";
+    if(report.modified.length > 0){
+        const tableDiv = document.createElement("div");
+        tableDiv.className = "comparison-table";
+
+        const header = document.createElement("div");
+        header.className = "table-header";
+        header.innerHTML = "<div>Tipo</div><div>Tabela</div><div>Nome</div><div>Alteração</div><div>Antes</div><div>Depois</div>";
+        tableDiv.appendChild(header);
+
+        report.modified.forEach(m => {
+            const row = document.createElement("div");
+            row.className = "table-row";
+            row.innerHTML = `<div>${m.tipo}</div><div>${m.tabela}</div><div>${m.nome}</div><div>${m.alteracao_tipo}</div>` +
+                            `<div class="old-value" title="${m.valor_antigo}">${m.valor_antigo}</div>` +
+                            `<div class="new-value" title="${m.valor_novo}">${m.valor_novo}</div>`;
+            tableDiv.appendChild(row);
+        });
+
+        reportDiv.appendChild(tableDiv);
+    } else {
+        reportDiv.innerHTML += "<p>Nenhum</p>";
+    }
+
+    container.appendChild(reportDiv);
+
+    // Botão de download PDF
+    const downloadBtn = document.createElement("a");
+    downloadBtn.className = "download";
+    downloadBtn.textContent = "📥 Baixar PDF";
+    downloadBtn.href = "#";
+    downloadBtn.addEventListener("click", () => {
+        fetch("/baixar_pdf", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({report})
+        })
+        .then(res => res.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "comparador.pdf";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        });
+    });
+
+    container.appendChild(downloadBtn);
+}
