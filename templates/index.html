@@ -4,21 +4,20 @@
     <meta charset="UTF-8">
     <title>Comparador de Modelos Power BI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <!-- Importando Font Awesome para usar ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pVXpT2...sua_chave_aqui..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <div class="container">
-    <h1>📊 Comparador de Versões de Modelos Power BI</h1>
+    <h1 class="main-title">
+        <i class="fas fa-file-upload upload-icon"></i>
+        Comparador de Modelos Power BI
+    </h1>
 
     <form id="uploadForm" method="POST" enctype="multipart/form-data">
         <div class="upload-section">
             <div class="file-upload-container" id="dropCurrent">
                 <label class="custom-file-upload">
-                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
                     Escolher PBIT Atual
                     <input type="file" id="currentFile" name="pbit_file" required>
                 </label>
@@ -28,7 +27,6 @@
 
             <div class="file-upload-container" id="dropPrevious">
                 <label class="custom-file-upload">
-                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
                     Escolher PBIT Anterior
                     <input type="file" id="previousFile" name="previous_pbit_file">
                 </label>
@@ -36,9 +34,7 @@
                 <span class="upload-feedback" id="previousFileFeedback"></span>
             </div>
 
-            <button type="submit" class="analyze-btn">
-                <i class="fas fa-search"></i> 📌 Analisar
-            </button>
+            <button type="submit" class="analyze-btn">📌 Analisar</button>
         </div>
 
         <div class="progress-bar" id="progressBar" style="display:none;">
@@ -69,6 +65,7 @@
     <div class="report-section">
         <h2>🔍 Relatório Detalhado</h2>
 
+        <!-- Adicionados e Removidos -->
         <h3>Adicionados</h3>
         <ul>
         {% for item in report['added'] %}
@@ -87,6 +84,7 @@
         {% endfor %}
         </ul>
 
+        <!-- Comparação Visual com Tooltip -->
         <h3>Modificados (Comparação Visual)</h3>
         {% if report['modified'] %}
             <div class="comparison-table">
@@ -114,9 +112,7 @@
         {% endif %}
     </div>
 
-    <a class="download" href="{{ url_for('download_pdf') }}">
-        <i class="fas fa-file-download"></i> 📥 Baixar PDF
-    </a>
+    <a class="download" href="{{ url_for('download_pdf') }}">📥 Baixar PDF</a>
     {% endif %}
 </div>
 <script src="{{ url_for('static', filename='script.js') }}"></script>
