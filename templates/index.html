@@ -4,17 +4,21 @@
     <meta charset="UTF-8">
     <title>Comparador de Modelos Power BI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Importando Font Awesome para usar ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 <div class="container">
     <h1>📊 Comparador de Versões de Modelos Power BI</h1>
 
-    <!-- Formulário sem method, será enviado via JS -->
-    <form id="uploadForm" enctype="multipart/form-data">
+    <form id="uploadForm" method="POST" enctype="multipart/form-data">
         <div class="upload-section">
             <div class="file-upload-container" id="dropCurrent">
                 <label class="custom-file-upload">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
                     Escolher PBIT Atual
                     <input type="file" id="currentFile" name="pbit_file" required>
                 </label>
@@ -24,6 +28,7 @@
 
             <div class="file-upload-container" id="dropPrevious">
                 <label class="custom-file-upload">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
                     Escolher PBIT Anterior
                     <input type="file" id="previousFile" name="previous_pbit_file">
                 </label>
@@ -31,7 +36,9 @@
                 <span class="upload-feedback" id="previousFileFeedback"></span>
             </div>
 
-            <button type="submit" class="analyze-btn">📌 Analisar</button>
+            <button type="submit" class="analyze-btn">
+                <i class="fas fa-search"></i> 📌 Analisar
+            </button>
         </div>
 
         <div class="progress-bar" id="progressBar" style="display:none;">
@@ -107,50 +114,11 @@
         {% endif %}
     </div>
 
-    <a class="download" href="{{ url_for('download_pdf') }}">📥 Baixar PDF</a>
+    <a class="download" href="{{ url_for('download_pdf') }}">
+        <i class="fas fa-file-download"></i> 📥 Baixar PDF
+    </a>
     {% endif %}
 </div>
-
 <script src="{{ url_for('static', filename='script.js') }}"></script>
-<script>
-const form = document.getElementById("uploadForm");
-
-form.addEventListener("submit", function(e) {
-    e.preventDefault(); // Evita recarregar a página
-
-    const progressBar = document.getElementById("progressBar");
-    const progress = document.getElementById("progress");
-    const checkmark = document.getElementById("analysisComplete");
-    progressBar.style.display = "block";
-    checkmark.style.display = "none";
-
-    let width = 0;
-    const interval = setInterval(() => {
-        if (width >= 95) clearInterval(interval);
-        else width += 2;
-        progress.style.width = width + "%";
-    }, 50);
-
-    const formData = new FormData(form);
-    fetch("/analisar", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        clearInterval(interval);
-        progress.style.width = "100%";
-        checkmark.style.display = "block";
-
-        console.log("Resultado da análise:", data);
-        // Aqui você pode atualizar os cards e relatórios via JS se quiser
-    })
-    .catch(err => {
-        clearInterval(interval);
-        progress.style.width = "0%";
-        alert("Erro ao analisar: " + err);
-    });
-});
-</script>
 </body>
 </html>
