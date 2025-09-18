@@ -1,38 +1,36 @@
-from flask import Flask, render_template, request, send_file
-import zipfile, json
+import os
+import zipfile
+import json
 from io import BytesIO
+from flask import Flask, render_template, request, send_file, jsonify
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 
 app = Flask(__name__)
-generated_pdf = None
 
 # -----------------------------
 # Função para extrair DataModel do PBIT
 # -----------------------------
-def carregar_data_model(uploaded_file):
-    with zipfile.ZipFile(uploaded_file, "r") as z:
+def carregar_data_model(file_storage):
+    with zipfile.ZipFile(file_storage, "r") as z:
         data_model = json.loads(z.read("DataModelSchema"))
     return data_model.get("model", {})
 
 # -----------------------------
-# Função para comparar dois modelos
+# Função para comparar modelos
 # -----------------------------
 def comparar_modelos(old_model, new_model):
     report = {"added": [], "removed": [], "modified": []}
-
     old_tables = {t["name"]: t for t in old_model.get("tables", [])}
     new_tables = {t["name"]: t for t in new_model.get("tables", [])}
 
-    # Tabelas adicionadas/retiradas
     added_tables = set(new_tables) - set(old_tables)
     removed_tables = set(old_tables) - set(new_tables)
     report["added"].extend([f"Tabela adicionada: {t}" for t in added_tables])
     report["removed"].extend([f"Tabela removida: {t}" for t in removed_tables])
 
-    # Tabelas existentes → checar colunas/medidas
     for tname in set(old_tables) & set(new_tables):
         old_t, new_t = old_tables[tname], new_tables[tname]
 
@@ -97,7 +95,7 @@ def comparar_modelos(old_model, new_model):
     return report
 
 # -----------------------------
-# Função para gerar PDF formatado
+# Função para gerar PDF
 # -----------------------------
 def gerar_pdf(report):
     buffer = BytesIO()
@@ -118,6 +116,7 @@ def gerar_pdf(report):
     elements.append(Paragraph(f"Removidos: {len(report['removed'])}", normal_style))
     elements.append(Paragraph(f"Modificados: {len(report['modified'])}", normal_style))
     elements.append(Spacer(1,12))
+
     elements.append(Paragraph("🔍 Relatório de Alterações Detalhado", title_style))
 
     elements.append(Paragraph("Adicionados", added_style))
@@ -154,37 +153,36 @@ def gerar_pdf(report):
 # -----------------------------
 # Rotas Flask
 # -----------------------------
-@app.route('/', methods=['GET', 'POST'])
+@app.route("/")
 def index():
-    global generated_pdf
+    return render_template("index.html")
+
+@app.route("/analisar", methods=["POST"])
+def analisar():
+    if "pbit_file" not in request.files:
+        return jsonify({"error": "Nenhum arquivo PBIT atual enviado"}), 400
+    new_file = request.files["pbit_file"]
+    old_file = request.files.get("previous_pbit_file")
+
+    new_model = carregar_data_model(new_file)
     report = None
-    summary = None
 
-    if request.method == 'POST':
-        new_file = request.files.get('pbit_file')
-        old_file = request.files.get('previous_pbit_file')
-        if new_file:
-            new_model = carregar_data_model(new_file)
-            if old_file:
-                old_model = carregar_data_model(old_file)
-                report = comparar_modelos(old_model, new_model)
-            else:
-                report = {"added": [], "removed": [], "modified": []}
-            summary = {
-                "Adicionados": len(report["added"]),
-                "Removidos": len(report["removed"]),
-                "Modificados": len(report["modified"])
-            }
-            generated_pdf = gerar_pdf(report)
+    if old_file:
+        old_model = carregar_data_model(old_file)
+        report = comparar_modelos(old_model, new_model)
 
-    return render_template("index.html", report=report, summary=summary)
+    return jsonify({"report": report})
 
-@app.route('/download')
-def download_pdf():
-    global generated_pdf
-    if generated_pdf:
-        return send_file(generated_pdf, as_attachment=True, download_name="comparador_de_versoes.pdf", mimetype="application/pdf")
-    return "Nenhum PDF gerado ainda.", 404
+@app.route("/baixar_pdf", methods=["POST"])
+def baixar_pdf():
+    data = request.get_json()
+    report = data.get("report")
+    pdf_buffer = gerar_pdf(report)
+    return send_file(pdf_buffer, as_attachment=True, download_name="comparador.pdf", mimetype="application/pdf")
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# -----------------------------
+# Run Flask
+# -----------------------------
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
