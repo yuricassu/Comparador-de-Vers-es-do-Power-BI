@@ -1,10 +1,11 @@
 /* Fonte global */
 body {
     font-family: 'Inter', sans-serif;
-    background: #f5f6fa;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* Roxo + Azul */
     margin: 0;
     padding: 0;
     color: #333;
+    min-height: 100vh;
 }
 
 /* Container principal */
@@ -12,12 +13,16 @@ body {
     max-width: 1200px; /* Aumentado para evitar barra lateral */
     margin: 0 auto;
     padding: 20px;
+    background: #fff; /* Fundo branco só no container */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
 /* Título */
 h1 {
     text-align: center;
     margin-bottom: 30px;
+    color: #4b0082; /* Roxo escuro */
 }
 
 /* Upload */
@@ -34,7 +39,7 @@ h1 {
     border-radius: 10px;
     padding: 20px;
     text-align: center;
-    background: #fff;
+    background: #fafafa;
     flex: 1;
     min-width: 280px;
     max-width: 400px;
@@ -43,14 +48,14 @@ h1 {
 }
 
 .file-upload-container.dragover {
-    border-color: #4CAF50;
-    background: #f0fff0;
+    border-color: #6a11cb;
+    background: #f3e8ff;
 }
 
 .custom-file-upload {
     display: inline-block;
     padding: 10px 20px;
-    background: #4CAF50;
+    background: #6a11cb;
     color: #fff;
     border-radius: 8px;
     cursor: pointer;
@@ -74,7 +79,7 @@ input[type="file"] {
 
 /* Botão analisar */
 .analyze-btn {
-    background: #007bff;
+    background: #2575fc;
     color: white;
     padding: 12px 25px;
     border: none;
@@ -85,7 +90,7 @@ input[type="file"] {
 }
 
 .analyze-btn:hover {
-    background: #0056b3;
+    background: #1258c9;
 }
 
 /* Barra de progresso */
@@ -101,7 +106,7 @@ input[type="file"] {
 .progress {
     height: 100%;
     width: 0;
-    background: #4CAF50;
+    background: #6a11cb;
     transition: width 0.4s ease;
 }
 
@@ -109,7 +114,7 @@ input[type="file"] {
 .checkmark {
     margin-top: 15px;
     font-size: 18px;
-    color: #4CAF50;
+    color: #6a11cb;
     text-align: center;
 }
 
@@ -152,6 +157,7 @@ input[type="file"] {
 .report-section h2 {
     text-align: center;
     margin-bottom: 20px;
+    color: #4b0082;
 }
 
 /* Tabela de modificados */
@@ -206,7 +212,7 @@ input[type="file"] {
     text-align: center;
     margin: 30px auto;
     padding: 12px 20px;
-    background: #27ae60;
+    background: #6a11cb;
     color: white;
     text-decoration: none;
     border-radius: 8px;
@@ -215,5 +221,5 @@ input[type="file"] {
 }
 
 .download:hover {
-    background: #1e8449;
+    background: #4b0082;
 }
