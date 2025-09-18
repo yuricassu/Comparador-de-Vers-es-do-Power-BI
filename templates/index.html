@@ -10,8 +10,7 @@
 <div class="container">
     <h1>📊 Comparador de Versões de Modelos Power BI</h1>
 
-    <!-- Formulário sem method, será enviado via JS -->
-    <form id="uploadForm" enctype="multipart/form-data">
+    <form id="uploadForm" method="POST" enctype="multipart/form-data">
         <div class="upload-section">
             <div class="file-upload-container" id="dropCurrent">
                 <label class="custom-file-upload">
@@ -41,116 +40,7 @@
 
     <div id="analysisComplete" class="checkmark" style="display:none;">✔ Análise Completa!</div>
 
-    {% if summary %}
-    <div class="cards">
-        <div class="card added">
-            <h3>✔ Adicionados</h3>
-            <p>{{ summary['Adicionados'] }}</p>
-        </div>
-        <div class="card removed">
-            <h3>✖ Removidos</h3>
-            <p>{{ summary['Removidos'] }}</p>
-        </div>
-        <div class="card modified">
-            <h3>⚠ Modificados</h3>
-            <p>{{ summary['Modificados'] }}</p>
-        </div>
-    </div>
-    {% endif %}
-
-    {% if report %}
-    <div class="report-section">
-        <h2>🔍 Relatório Detalhado</h2>
-
-        <h3>Adicionados</h3>
-        <ul>
-        {% for item in report['added'] %}
-            <li>{{ item }}</li>
-        {% else %}
-            <li>Nenhum</li>
-        {% endfor %}
-        </ul>
-
-        <h3>Removidos</h3>
-        <ul>
-        {% for item in report['removed'] %}
-            <li>{{ item }}</li>
-        {% else %}
-            <li>Nenhum</li>
-        {% endfor %}
-        </ul>
-
-        <h3>Modificados (Comparação Visual)</h3>
-        {% if report['modified'] %}
-            <div class="comparison-table">
-                <div class="table-header">
-                    <div>Tipo</div>
-                    <div>Tabela</div>
-                    <div>Nome</div>
-                    <div>Alteração</div>
-                    <div>Antes</div>
-                    <div>Depois</div>
-                </div>
-                {% for m in report['modified'] %}
-                <div class="table-row">
-                    <div>{{ m.tipo }}</div>
-                    <div>{{ m.tabela }}</div>
-                    <div>{{ m.nome }}</div>
-                    <div>{{ m.alteracao_tipo }}</div>
-                    <div class="old-value" title="{{ m.valor_antigo }}">{{ m.valor_antigo }}</div>
-                    <div class="new-value" title="{{ m.valor_novo }}">{{ m.valor_novo }}</div>
-                </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p>Nenhum</p>
-        {% endif %}
-    </div>
-
-    <a class="download" href="{{ url_for('download_pdf') }}">📥 Baixar PDF</a>
-    {% endif %}
 </div>
-
 <script src="{{ url_for('static', filename='script.js') }}"></script>
-<script>
-const form = document.getElementById("uploadForm");
-
-form.addEventListener("submit", function(e) {
-    e.preventDefault(); // Evita recarregar a página
-
-    const progressBar = document.getElementById("progressBar");
-    const progress = document.getElementById("progress");
-    const checkmark = document.getElementById("analysisComplete");
-    progressBar.style.display = "block";
-    checkmark.style.display = "none";
-
-    let width = 0;
-    const interval = setInterval(() => {
-        if (width >= 95) clearInterval(interval);
-        else width += 2;
-        progress.style.width = width + "%";
-    }, 50);
-
-    const formData = new FormData(form);
-    fetch("/analisar", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        clearInterval(interval);
-        progress.style.width = "100%";
-        checkmark.style.display = "block";
-
-        console.log("Resultado da análise:", data);
-        // Aqui você pode atualizar os cards e relatórios via JS se quiser
-    })
-    .catch(err => {
-        clearInterval(interval);
-        progress.style.width = "0%";
-        alert("Erro ao analisar: " + err);
-    });
-});
-</script>
 </body>
 </html>
