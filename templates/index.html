@@ -5,19 +5,19 @@
     <title>Comparador de Modelos Power BI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pVXpT2...sua_chave_aqui..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="container">
     <h1 class="main-title">
-        <i class="fas fa-file-upload upload-icon"></i>
-        Comparador de Modelos Power BI
+        <i class="fas fa-file-upload upload-icon"></i> 
+        📊 Comparador de Versões de Modelos Power BI
     </h1>
 
     <form id="uploadForm" method="POST" enctype="multipart/form-data">
         <div class="upload-section">
             <div class="file-upload-container" id="dropCurrent">
-                <label class="custom-file-upload">
+                <label class="custom-file-upload gradient-button">
                     Escolher PBIT Atual
                     <input type="file" id="currentFile" name="pbit_file" required>
                 </label>
@@ -26,7 +26,7 @@
             </div>
 
             <div class="file-upload-container" id="dropPrevious">
-                <label class="custom-file-upload">
+                <label class="custom-file-upload gradient-button">
                     Escolher PBIT Anterior
                     <input type="file" id="previousFile" name="previous_pbit_file">
                 </label>
@@ -34,7 +34,7 @@
                 <span class="upload-feedback" id="previousFileFeedback"></span>
             </div>
 
-            <button type="submit" class="analyze-btn">📌 Analisar</button>
+            <button type="submit" class="analyze-btn gradient-button">📌 Analisar</button>
         </div>
 
         <div class="progress-bar" id="progressBar" style="display:none;">
