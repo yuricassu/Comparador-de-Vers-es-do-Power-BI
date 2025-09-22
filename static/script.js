@@ -1,10 +1,24 @@
 // Atualização de nomes e feedback
 function handleFileInput(fileInput, fileNameSpan, feedbackSpan) {
+    // Ensure the file input only accepts .pbit files
+    fileInput.setAttribute('accept', '.pbit');
+    
     fileInput.addEventListener("change", function() {
         if (this.files.length > 0) {
-            fileNameSpan.textContent = this.files[0].name;
-            feedbackSpan.textContent = "Arquivo carregado com sucesso!";
-            feedbackSpan.style.color = "#00ff00";
+            const file = this.files[0];
+            const fileName = file.name;
+            const fileExtension = fileName.toLowerCase().split('.').pop();
+            
+            if (fileExtension === 'pbit') {
+                fileNameSpan.textContent = fileName;
+                feedbackSpan.textContent = "✅ Arquivo válido";
+                feedbackSpan.style.color = "#4CAF50";
+            } else {
+                fileNameSpan.textContent = "❌ Arquivo inválido";
+                feedbackSpan.textContent = "Apenas arquivos .pbit são permitidos";
+                feedbackSpan.style.color = "#e74c3c";
+                this.value = ""; // Clear the invalid file
+            }
         } else {
             fileNameSpan.textContent = "Nenhum arquivo selecionado";
             feedbackSpan.textContent = "";
@@ -26,6 +40,14 @@ handleFileInput(
 
 // Drag & drop
 function enableDragDrop(dropContainer, fileInput, fileNameSpan, feedbackSpan) {
+    // Make the entire container clickable to trigger file picker
+    dropContainer.addEventListener("click", e => {
+        // Only trigger if clicking on the container itself, not on the button
+        if (e.target === dropContainer || e.target.classList.contains('file-name') || e.target.classList.contains('upload-feedback')) {
+            fileInput.click();
+        }
+    });
+    
     dropContainer.addEventListener("dragover", e => {
         e.preventDefault();
         dropContainer.classList.add("dragover");
@@ -37,10 +59,20 @@ function enableDragDrop(dropContainer, fileInput, fileNameSpan, feedbackSpan) {
         e.preventDefault();
         dropContainer.classList.remove("dragover");
         if(e.dataTransfer.files.length > 0) {
-            fileInput.files = e.dataTransfer.files;
-            fileNameSpan.textContent = fileInput.files[0].name;
-            feedbackSpan.textContent = "Arquivo carregado com sucesso!";
-            feedbackSpan.style.color = "#00ff00";
+            const file = e.dataTransfer.files[0];
+            const fileName = file.name;
+            const fileExtension = fileName.toLowerCase().split('.').pop();
+            
+            if (fileExtension === 'pbit') {
+                fileInput.files = e.dataTransfer.files;
+                fileNameSpan.textContent = fileName;
+                feedbackSpan.textContent = "✅ Arquivo válido";
+                feedbackSpan.style.color = "#4CAF50";
+            } else {
+                fileNameSpan.textContent = "❌ Arquivo inválido";
+                feedbackSpan.textContent = "Apenas arquivos .pbit são permitidos";
+                feedbackSpan.style.color = "#e74c3c";
+            }
         }
     });
 }

@@ -161,8 +161,16 @@ def index():
 def analisar():
     if "pbit_file" not in request.files:
         return jsonify({"error": "Nenhum arquivo PBIT atual enviado"}), 400
+    
     new_file = request.files["pbit_file"]
     old_file = request.files.get("previous_pbit_file")
+    
+    # Validate file extensions
+    if new_file and not new_file.filename.lower().endswith('.pbit'):
+        return jsonify({"error": "Arquivo atual deve ser um arquivo .pbit"}), 400
+    
+    if old_file and not old_file.filename.lower().endswith('.pbit'):
+        return jsonify({"error": "Arquivo anterior deve ser um arquivo .pbit"}), 400
 
     new_model = carregar_data_model(new_file)
     report = None

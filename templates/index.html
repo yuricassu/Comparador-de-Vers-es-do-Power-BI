@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comparador de Modelos Power BI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -16,22 +17,24 @@
 
     <form id="uploadForm" method="POST" enctype="multipart/form-data">
         <div class="upload-section">
-            <div class="file-upload-container" id="dropCurrent">
-                <label class="custom-file-upload gradient-button">
-                    Escolher PBIT Atual
-                    <input type="file" id="currentFile" name="pbit_file" required>
-                </label>
-                <span class="file-name" id="currentFileName">Nenhum arquivo selecionado</span>
-                <span class="upload-feedback" id="currentFileFeedback"></span>
-            </div>
-
-            <div class="file-upload-container" id="dropPrevious">
-                <label class="custom-file-upload gradient-button">
-                    Escolher PBIT Anterior
-                    <input type="file" id="previousFile" name="previous_pbit_file">
-                </label>
-                <span class="file-name" id="previousFileName">Nenhum arquivo selecionado</span>
-                <span class="upload-feedback" id="previousFileFeedback"></span>
+            <div class="file-upload-wrapper">
+                <div class="file-upload-container" id="dropCurrent">
+                    <label class="custom-file-upload gradient-button">
+                        Escolher PBIT Atual
+                        <input type="file" id="currentFile" name="pbit_file" accept=".pbit" required>
+                    </label>
+                    <span class="file-name" id="currentFileName">Nenhum arquivo selecionado</span>
+                    <span class="upload-feedback" id="currentFileFeedback"></span>
+                </div>
+    
+                <div class="file-upload-container" id="dropPrevious">
+                    <label class="custom-file-upload gradient-button">
+                        Escolher PBIT Anterior
+                        <input type="file" id="previousFile" name="previous_pbit_file" accept=".pbit">
+                    </label>
+                    <span class="file-name" id="previousFileName">Nenhum arquivo selecionado</span>
+                    <span class="upload-feedback" id="previousFileFeedback"></span>
+                </div>
             </div>
 
             <button type="submit" class="analyze-btn gradient-button">📌 Analisar</button>

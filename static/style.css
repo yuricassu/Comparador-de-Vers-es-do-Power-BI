@@ -1,3 +1,7 @@
+html {
+    /* height: 100%; */
+}
+
 /* Fonte global */
 body {
     font-family: 'Inter', sans-serif;
@@ -5,17 +9,36 @@ body {
     margin: 0;
     padding: 0;
     color: #333;
-    min-height: 100vh;
+    min-height: calc(100vh - 20px);
 }
 
 /* Container principal */
 .container {
     max-width: 1200px;
-    margin: 40px auto; /* Espaçamento do topo */
-    padding: 20px;
+    margin: 20px auto; /* Espaçamento do topo reduzido para mobile */
+    padding: 15px;
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+@media (max-width: 1210px) {
+    .container {
+        margin: 20px 10px;
+    }
+}
+
+/* Responsive container */
+@media (max-width: 768px) {
+    .container {
+        margin: 10px;
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    body {
+        min-height: calc(100vh - 10px);
+    }
 }
 
 /* Título */
@@ -23,6 +46,23 @@ h1 {
     text-align: center;
     margin-bottom: 30px;
     color: #4b0082;
+    font-size: 1.8rem;
+}
+
+/* Responsive typography */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+    
+    h2 {
+        font-size: 1.3rem;
+    }
+    
+    h3 {
+        font-size: 1.1rem;
+    }
 }
 
 /* Upload */
@@ -34,6 +74,15 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Responsive upload section */
+@media (max-width: 768px) {
+    .upload-section {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+}
+
 .file-upload-container {
     border: 2px dashed #bbb;
     border-radius: 10px;
@@ -41,10 +90,29 @@ h1 {
     text-align: center;
     background: #fafafa;
     flex: 1;
-    min-width: 280px;
+    min-width: 300px;
     max-width: 400px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+}
+
+.file-upload-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+/* Responsive file upload containers */
+@media (max-width: 768px) {
+    .file-upload-container {
+        min-width: 100%;
+        max-width: 100%;
+        padding: 15px;
+    }
 }
 
 .file-upload-container.dragover {
@@ -53,6 +121,9 @@ h1 {
 }
 
 .custom-file-upload {
+    max-width: 300px;
+    margin: auto;
+    box-sizing: border-box;
     display: inline-block;
     padding: 10px 20px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -61,6 +132,19 @@ h1 {
     cursor: pointer;
     font-weight: 600;
     transition: transform 0.2s ease;
+    min-height: 44px; /* Touch-friendly minimum height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive buttons */
+@media (max-width: 768px) {
+    .custom-file-upload {
+        padding: 12px 16px;
+        font-size: 14px;
+        min-height: 48px; /* Larger touch target for mobile */
+    }
 }
 
 .custom-file-upload:hover {
@@ -94,6 +178,20 @@ input[type="file"] {
     margin-top: 15px;
     font-weight: 600;
     transition: transform 0.2s ease;
+    min-height: 44px;
+    width: 100%;
+    max-width: 300px;
+}
+
+/* Responsive analyze button */
+@media (max-width: 768px) {
+    .analyze-btn {
+        padding: 14px 20px;
+        font-size: 16px;
+        min-height: 48px;
+        margin: auto;
+        margin-top: 10px;
+    }
 }
 
 .analyze-btn:hover {
@@ -134,6 +232,15 @@ input[type="file"] {
     flex-wrap: wrap;
 }
 
+/* Responsive cards */
+@media (max-width: 768px) {
+    .cards {
+        flex-direction: column;
+        gap: 15px;
+        margin: 20px 0;
+    }
+}
+
 .card {
     flex: 1;
     min-width: 250px;
@@ -142,6 +249,13 @@ input[type="file"] {
     background: #fff;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     text-align: center;
+}
+
+/* Responsive cards */
+@media (max-width: 768px) {
+    .card {
+        padding: 15px;
+    }
 }
 
 .card.added {
@@ -176,9 +290,17 @@ input[type="file"] {
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-
     overflow-x: auto;
     max-width: 100%;
+}
+
+/* Responsive table - keep horizontal scroll on all devices */
+@media (max-width: 768px) {
+    .table-header > div,
+    .table-row > div {
+        padding: 6px;
+        font-size: 12px;
+    }
 }
 
 .table-header {
@@ -225,8 +347,79 @@ input[type="file"] {
     width: fit-content;
     font-weight: 600;
     transition: transform 0.2s ease;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive download button */
+@media (max-width: 768px) {
+    .download {
+        padding: 14px 20px;
+        font-size: 16px;
+        min-height: 48px;
+        margin: 20px auto;
+        width: 100%;
+        max-width: 300px;
+    }
 }
 
 .download:hover {
     transform: scale(1.05);
+}
+
+/* Additional responsive improvements */
+@media (max-width: 480px) {
+    .container {
+        padding: 8px;
+    }
+    
+    h1 {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+    
+    .file-upload-container {
+        padding: 12px;
+    }
+    
+    .custom-file-upload {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .analyze-btn {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+    
+    .card {
+        padding: 12px;
+    }
+    
+    .report-section h2 {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+    
+    .report-section h3 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+    .custom-file-upload:hover,
+    .analyze-btn:hover,
+    .download:hover {
+        transform: none;
+    }
+    
+    .custom-file-upload:active,
+    .analyze-btn:active,
+    .download:active {
+        transform: scale(0.98);
+    }
 }
